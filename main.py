@@ -9,7 +9,8 @@ load_dotenv()
 
 def createParser ():
     parser = argparse.ArgumentParser()
-    parser.add_argument ('name', nargs='+')
+    parser.add_argument ('url1', nargs='+')
+    parser.add_argument('url2', nargs='+')
  
     return parser
 
@@ -60,10 +61,10 @@ if __name__ == '__main__':
             user_link = name
         else:
             user_link = input('Введите ссылку: ')
-    parse_url = parse_url(user_link)
-    is_bitlinks_url = is_bitlink(parse_url)
+    url_parse = parse_url(user_link)
+    is_bitlinks_url = is_bitlink(url_parse)
     if is_bitlinks_url:
-        click_stat = count_clicks(token_bitly, parse_url)
+        click_stat = count_clicks(token_bitly, url_parse)
         print(click_stat)
     else:
         short_link = shorten_link(token_bitly, user_link)
