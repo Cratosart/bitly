@@ -5,10 +5,12 @@ import argparse
 from urllib.parse import urlparse
 from dotenv import load_dotenv
 
+
 def createParser ():
     parser = argparse.ArgumentParser()
     parser.add_argument ('url', nargs='?')
     return parser
+
 
 def parse_url(user_link):
    parsed_url = urlparse(user_link)
@@ -27,7 +29,6 @@ def is_bitlink(bitlink_url):
 def shorten_link(token_bitly, user_link):
     url_bitly = 'https://api-ssl.bitly.com/v4/bitlinks'
     payload = {'long_url': user_link, 'domain': 'bit.ly'}
-
     response = requests.post(
         url_bitly,
         json=payload,
@@ -42,7 +43,6 @@ def count_clicks(token_bitly, bitlink_url):
     response = requests.get(url_stat,
                             headers={'Authorization': f'Bearer {token_bitly}'})
     response.raise_for_status()
-
     result = response.json()['total_clicks']
     return result
 
@@ -55,6 +55,7 @@ if __name__ == '__main__':
     user_link = namespace.url
     url_parse = parse_url(user_link)
     is_bitlinks_url = is_bitlink(url_parse)
+    
     if is_bitlinks_url:
         click_stat = count_clicks(token_bitly, url_parse)
         print('Переходов по ссылке: ', click_stat)
