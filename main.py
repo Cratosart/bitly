@@ -9,8 +9,8 @@ load_dotenv()
 
 def createParser ():
     parser = argparse.ArgumentParser()
-    parser.add_argument ('-url1', nargs='+', default='')
-    parser.add_argument('-url2', nargs='+', default='')
+    parser.add_argument ('url', nargs='+')
+
  
     return parser
 
@@ -54,23 +54,18 @@ def count_clicks(token_bitly, bitlink_url):
 if __name__ == '__main__':
     parser = createParser()
     namespace = parser.parse_args(sys.argv[1:])
-    url1 = namespace.url1
-    url1 = ''.join(url1)
-    url2 = namespace.url2
-    url2 = ''.join(url2)
-    list_url = [url1, url2]
     token_bitly = os.environ['BITLY_TOKEN']
+    for name in namespace.url:
+        user_link = name
 
-    for url in list_url:
-        user_link = url
-        url_parse = parse_url(user_link)
-        is_bitlinks_url = is_bitlink(url_parse)
-        if is_bitlinks_url:
-            click_stat = count_clicks(token_bitly, url_parse)
-            print('Переходов по ссылке: ', click_stat)
-        else:
-            short_link = shorten_link(token_bitly, user_link)
-            print('Ваша короткая ссылка: ', short_link)
+    url_parse = parse_url(user_link)
+    is_bitlinks_url = is_bitlink(url_parse)
+    if is_bitlinks_url:
+        click_stat = count_clicks(token_bitly, url_parse)
+        print('Переходов по ссылке: ', click_stat)
+    else:
+        short_link = shorten_link(token_bitly, user_link)
+        print('Ваша короткая ссылка: ', short_link)
 
 
 
